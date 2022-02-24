@@ -9,10 +9,10 @@
     }
   },
   "profiles": {
-    "emmad": {
+    "emmad (Dev)": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "emmad (Dev)",
+      "launchUrl": "emmad",
       "applicationUrl": "https://localhost:5001;http://localhost:5000",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
