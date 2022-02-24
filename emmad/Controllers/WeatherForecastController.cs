@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using emmad.Context;
+using emmad.Entity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -17,10 +19,12 @@ namespace emmad.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly MasterContext MasterContext;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, MasterContext masterContext)
         {
             _logger = logger;
+            MasterContext = masterContext;
         }
 
         [HttpGet]
@@ -35,5 +39,13 @@ namespace emmad.Controllers
             })
             .ToArray();
         }
+
+        [HttpGet("administrateurs")]
+        public IEnumerable<Administrateur> GetAdministrateur()
+        {
+            var adminstrateurs = MasterContext.administrateur.ToList();
+            return adminstrateurs;                                   
+        }
+
     }
 }
