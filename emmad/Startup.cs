@@ -11,10 +11,12 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;using Newtonsoft.Json;
+using System.Threading.Tasks;
+using Newtonsoft.Json;
 using emmad.Interface;
 using emmad.Services;
 using emmad.Settings;
+using emmad.Helper;
 
 namespace emmad
 {
@@ -45,8 +47,11 @@ namespace emmad
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
 
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+            services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+            services.AddCors();
 
             services.AddScoped<IAdministrateur, AdministrateurService>();
+            services.AddScoped<IEmail, EmailService>();
 
             services.AddControllers();
         }
@@ -64,6 +69,8 @@ namespace emmad
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<JwtMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
