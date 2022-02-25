@@ -14,6 +14,7 @@ using System.Linq;
 using System.Threading.Tasks;using Newtonsoft.Json;
 using emmad.Interface;
 using emmad.Services;
+using emmad.Settings;
 
 namespace emmad
 {
@@ -42,6 +43,9 @@ namespace emmad
             },
                ServiceLifetime.Transient);
             services.AddControllers().AddJsonOptions(x => x.JsonSerializerOptions.IgnoreNullValues = true);
+
+            services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
+
             services.AddScoped<IAdministrateur, AdministrateurService>();
 
             services.AddControllers();

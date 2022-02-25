@@ -11,11 +11,12 @@ namespace emmad.Services
     {
 
         private readonly MasterContext MasterContext;
+        private readonly EmailService EmailService;
 
-
-        public AdministrateurService(MasterContext masterContext)
+        public AdministrateurService(MasterContext masterContext, EmailService emailService)
         {
             MasterContext = masterContext;
+            EmailService = emailService;
         }
 
         public Administrateur CreateAdministrateur(CreateAdministrateurRequest model)
