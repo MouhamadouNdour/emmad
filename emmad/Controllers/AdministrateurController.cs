@@ -1,5 +1,7 @@
 ﻿using emmad.Context;
 using emmad.Entity;
+using emmad.Interface;
+using emmad.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -14,31 +16,28 @@ namespace emmad.Controllers
     [Route("[controller]")]
     public class AdministrateurController : ControllerBase
     {
-       
 
-        private readonly MasterContext MasterContext;
+        private IAdministrateur Service;
 
-        public AdministrateurController(MasterContext masterContext)
+        public AdministrateurController(IAdministrateur _service)
         {
-            MasterContext = masterContext;
+            Service = _service;
+        }
+
+        [HttpPost]
+        public IActionResult CreateAdministrateur(CreateAdministrateurRequest model)
+        {
+            try
+            {
+                Service.CreateAdministrateur(model);
+                return Ok("Adminstrateur créé avec succès.");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
         }
 
 
-        [HttpGet("administrateurs")]
-        public IEnumerable<Administrateur> GetAdministrateur()
-        {
-            var adminstrateurs = MasterContext.administrateur.ToList();
-            return adminstrateurs;                                   
-        }
-
-
-        [HttpGet("organisations")]
-        public IEnumerable<Organisation> GetOrganisation()
-        {
-            var organisations = MasterContext.organisation
-                                .Include(o => o.Administrateur)
-                                .ToList();
-            return organisations;
-        }
     }
 }
