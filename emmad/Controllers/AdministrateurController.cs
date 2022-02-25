@@ -30,7 +30,7 @@ namespace emmad.Controllers
             try
             {
                 Service.CreateAdministrateur(model);
-                return Ok("Adminstrateur créé avec succès.");
+                return Ok(new {message = "Adminstrateur créé avec succès." });
             }
             catch (Exception ex)
             {
