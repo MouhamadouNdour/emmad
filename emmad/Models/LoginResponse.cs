@@ -11,5 +11,6 @@ namespace emmad.Models
         public string? telephone { get; set; }
         public DateTime date_created { get; set; }
         public string token { get; set; }
+        public DateTime tokenExpiration { get; set; }
     }
 }

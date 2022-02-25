@@ -64,14 +64,15 @@ namespace emmad.Services
             return true;
         }
 
-        public static string GenerateJwtToken(Administrateur administrateur, AppSettings settings)
+        public static string GenerateJwtToken(Administrateur administrateur, AppSettings settings, out DateTime tokenExpiration)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(settings.JWTSecretCode);
+            tokenExpiration = DateTime.UtcNow.AddMinutes(10);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", administrateur.id.ToString()) }),
-                Expires = DateTime.UtcNow.AddMinutes(10),
+                Expires = tokenExpiration,
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha512Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

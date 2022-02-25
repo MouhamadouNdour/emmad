@@ -49,8 +49,10 @@ namespace emmad.Services
 
             // Connexion reussie
             var response = Mapper.Map<LoginResponse>(administrateur);
+            DateTime tokenExpiration;
 
-            response.token = SecurityService.GenerateJwtToken(administrateur, appSettings);
+            response.token = SecurityService.GenerateJwtToken(administrateur, appSettings, out tokenExpiration);
+            response.tokenExpiration = tokenExpiration;
 
             return response;
         }
