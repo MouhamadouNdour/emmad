@@ -21,6 +21,19 @@ namespace emmad.Services
 
         public Administrateur CreateAdministrateur(CreateAdministrateurRequest model)
         {
+
+
+            var id_connect = 1;
+            var date_crea = MasterContext.administrateur
+                .OrderByDescending(a => a.date_created)
+                .Where(a => a.id_createur == id_connect)
+                .Select( a => a.date_created)
+                .FirstOrDefault();
+
+            if(date_crea.AddMinutes(1) < DateTime.Now)
+            {
+                throw new Exception("Veuillez attendre 1 minute avant de pouvoir créer un utilisateur");
+            }
             if (string.IsNullOrEmpty(model.email))
             {
                 throw new Exception("Email: Vide");
