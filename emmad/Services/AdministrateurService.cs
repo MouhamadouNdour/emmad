@@ -12,16 +12,17 @@ namespace emmad.Services
 {
     public class AdministrateurService : IAdministrateur
     {
-
         private readonly MasterContext MasterContext;
         private readonly IMapper Mapper;
         private readonly AppSettings appSettings;
+        private readonly IEmail EmailService;
 
-        public AdministrateurService(MasterContext masterContext, IMapper mapper, IOptions<AppSettings> settings)
+        public AdministrateurService(MasterContext masterContext, IMapper mapper, IOptions<AppSettings> settings, IEmail emailService)
         {
             MasterContext = masterContext;
             Mapper = mapper;
             appSettings = settings.Value;
+            EmailService = emailService;
         }
 
         public LoginResponse Login(LoginRequest model)
@@ -108,10 +109,27 @@ namespace emmad.Services
             Console.WriteLine(administrateur.id);
             Console.WriteLine(connectedUser.id);
             administrateur.id_createur = connectedUser.id;
+
+            SendEmailVerification(administrateur);
+
             MasterContext.administrateur.Add(administrateur);
             MasterContext.SaveChanges();
 
             return Mapper.Map<CreateResponse>(administrateur);
+        }
+
+        private void SendEmailVerification(Administrateur admin)
+        {
+            string message = $@"<p>Commencez dès maintenant à utiliser notre API</p>
+                             <p>Email : {admin.email}</p>";
+
+            EmailService.Send(
+                to: admin.email,
+                subject: "[Emmad Application] - Nouvelle inscription dans notre application",
+                html: $@"<h4>Bienvenue</h4>
+                         <p>Merci pour votre inscription !</p>
+                         {message}"
+            );
         }
     }
 }

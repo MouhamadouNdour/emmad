@@ -49,10 +49,9 @@ namespace emmad
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddCors();
-
-            services.AddScoped<IAdministrateur, AdministrateurService>();
-
             services.AddControllers();
+            services.AddScoped<IEmail, EmailService>();
+            services.AddScoped<IAdministrateur, AdministrateurService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
