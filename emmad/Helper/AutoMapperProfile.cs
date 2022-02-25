@@ -8,6 +8,8 @@ namespace emmad.Helper
     {
         public AutoMapperProfile() {
             CreateMap<Administrateur, LoginResponse>();
+            CreateMap<CreateAdministrateurRequest, Administrateur>();
+            CreateMap<Administrateur, CreateResponse>();
         }
     }
 }

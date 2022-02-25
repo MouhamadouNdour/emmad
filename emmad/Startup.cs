@@ -51,7 +51,6 @@ namespace emmad
             services.AddCors();
 
             services.AddScoped<IAdministrateur, AdministrateurService>();
-            services.AddScoped<IEmail, EmailService>();
 
             services.AddControllers();
         }
@@ -64,11 +63,7 @@ namespace emmad
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            app.UseAuthorization();
 
             app.UseMiddleware<JwtMiddleware>();
 

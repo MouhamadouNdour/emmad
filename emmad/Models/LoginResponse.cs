@@ -9,7 +9,7 @@ namespace emmad.Models
         public string prenom { get; set; }
         public string email { get; set; }
         public string? telephone { get; set; }
-        public DateTime created_at { get; set; }
+        public DateTime date_created { get; set; }
         public string token { get; set; }
     }
 }

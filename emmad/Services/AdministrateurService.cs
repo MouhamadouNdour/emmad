@@ -14,14 +14,12 @@ namespace emmad.Services
     {
 
         private readonly MasterContext MasterContext;
-        private readonly EmailService EmailService;
         private readonly IMapper Mapper;
         private readonly AppSettings appSettings;
 
-        public AdministrateurService(MasterContext masterContext, EmailService emailService, IMapper mapper, IOptions<AppSettings> settings)
+        public AdministrateurService(MasterContext masterContext, IMapper mapper, IOptions<AppSettings> settings)
         {
             MasterContext = masterContext;
-            EmailService = emailService;
             Mapper = mapper;
             appSettings = settings.Value;
         }
@@ -56,18 +54,19 @@ namespace emmad.Services
             return response;
         }
 
-        public Administrateur CreateAdministrateur(CreateAdministrateurRequest model)
+        public CreateResponse CreateAdministrateur(Administrateur connectedUser, CreateAdministrateurRequest model)
         {
+            DateTime? date_crea = null;
+            if(connectedUser != null)
+            {
+                date_crea = MasterContext.administrateur
+                    .OrderByDescending(a => a.date_created)
+                    .Where(a => a.id_createur == connectedUser.id)
+                    .Select(a => a.date_created)
+                    .FirstOrDefault();
+            }
 
-
-            var id_connect = 1;
-            var date_crea = MasterContext.administrateur
-                .OrderByDescending(a => a.date_created)
-                .Where(a => a.id_createur == id_connect)
-                .Select( a => a.date_created)
-                .FirstOrDefault();
-
-            if(date_crea.AddMinutes(1) < DateTime.Now)
+            if (date_crea != null && ((DateTime)date_crea).AddMinutes(1) > DateTime.Now)
             {
                 throw new Exception("Veuillez attendre 1 minute avant de pouvoir créer un utilisateur");
             }
@@ -97,15 +96,22 @@ namespace emmad.Services
                 throw new Exception("Veuillez saisir un mot de passe.");
             }
 
-            var admin = new Administrateur();
-            admin.email = model.email;
-            admin.nom = model.nom; 
-            admin.prenom = model.prenom;
+            var administrateur = Mapper.Map<Administrateur>(model);
+            administrateur.date_created = DateTime.Now;
 
-            MasterContext.administrateur.Add(admin);
+            byte[] passwordHash, passwordSalt;
+            SecurityService.CreatePasswordHash(model.passe, out passwordHash, out passwordSalt);
+            administrateur.password = passwordHash;
+            administrateur.salt = passwordSalt;
+            // Le probleme est la condition
+            Console.WriteLine(date_crea);
+            Console.WriteLine(administrateur.id);
+            Console.WriteLine(connectedUser.id);
+            administrateur.id_createur = connectedUser.id;
+            MasterContext.administrateur.Add(administrateur);
             MasterContext.SaveChanges();
 
-            return admin;
+            return Mapper.Map<CreateResponse>(administrateur);
         }
     }
 }

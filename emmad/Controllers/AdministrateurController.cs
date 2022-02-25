@@ -1,5 +1,6 @@
 ﻿using emmad.Context;
 using emmad.Entity;
+using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,7 +15,7 @@ namespace emmad.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class AdministrateurController : ControllerBase
+    public class AdministrateurController : BaseController
     {
 
         private IAdministrateur Service;
@@ -24,13 +25,32 @@ namespace emmad.Controllers
             Service = _service;
         }
 
+
+        [HttpPost("login")]
+        public ActionResult Login([FromBody] LoginRequest Model)
+        {
+            try
+            {
+                var response = Service.Login(Model);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+
+        }
+
         [HttpPost]
+        [Authorize]
         public IActionResult CreateAdministrateur(CreateAdministrateurRequest model)
         {
             try
             {
-                Service.CreateAdministrateur(model);
-                return Ok(new {message = "Adminstrateur créé avec succès." });
+                return Ok(new {
+                    data = Service.CreateAdministrateur(Administrateur, model),
+                    message = "Administrateur créé avec succès."
+                });
             }
             catch (Exception ex)
             {
