@@ -28,13 +28,13 @@ namespace emmad.Services
         public LoginResponse Login(LoginRequest model)
         {
             // Assertion des données
-            if (string.IsNullOrEmpty(model.email) || string.IsNullOrEmpty(model.passe))
+            if (string.IsNullOrEmpty(model.Email) || string.IsNullOrEmpty(model.Passe))
             {
                 throw new Exception("Adresse email ou mot de passe invalide.");
             }
 
             // Vérification de l'adresse email dans la base de données
-            var administrateur = MasterContext.administrateur.SingleOrDefault(u => u.email == model.email);
+            var administrateur = MasterContext.administrateur.SingleOrDefault(u => u.email == model.Email);
 
             if (administrateur == null)
             {
@@ -42,7 +42,7 @@ namespace emmad.Services
             }
 
             // Verification du mot de passe
-            if (!SecurityService.VerifyPasswordHash(administrateur.password, administrateur.salt, model.passe))
+            if (!SecurityService.VerifyPasswordHash(administrateur.password, administrateur.salt, model.Passe))
             {
                 throw new Exception("Erreur sur l'adresse email ou le mot de passe.");
             }
@@ -51,8 +51,8 @@ namespace emmad.Services
             var response = Mapper.Map<LoginResponse>(administrateur);
             DateTime tokenExpiration;
 
-            response.token = SecurityService.GenerateJwtToken(administrateur, appSettings, out tokenExpiration);
-            response.tokenExpiration = tokenExpiration;
+            response.Token = SecurityService.GenerateJwtToken(administrateur, appSettings, out tokenExpiration);
+            response.TokenExpiration = tokenExpiration;
 
             return response;
         }
@@ -73,28 +73,28 @@ namespace emmad.Services
             {
                 throw new Exception("Veuillez attendre 1 minute avant de pouvoir créer un utilisateur");
             }
-            if (string.IsNullOrEmpty(model.email))
+            if (string.IsNullOrEmpty(model.Email))
             {
                 throw new Exception("Email: Vide");
             }
-            if (string.IsNullOrEmpty(model.nom))
+            if (string.IsNullOrEmpty(model.Nom))
             {
                 throw new Exception("Nom: Vide");
             }
-            if (string.IsNullOrEmpty(model.prenom))
+            if (string.IsNullOrEmpty(model.Prenom))
             {
                 throw new Exception("Prenom: Vide");
             }
 
             var existingAdmin = MasterContext.administrateur
-                            .FirstOrDefault(a => a.email == model.email);
+                            .FirstOrDefault(a => a.email == model.Email);
 
             if(existingAdmin != null)
             {
-                throw new Exception("L'adresse email "+ model.email + " est déjà utilisé.");
+                throw new Exception("L'adresse email "+ model.Email + " est déjà utilisé.");
             }
 
-            if (string.IsNullOrWhiteSpace(model.passe))
+            if (string.IsNullOrWhiteSpace(model.Passe))
             {
                 throw new Exception("Veuillez saisir un mot de passe.");
             }
@@ -103,7 +103,7 @@ namespace emmad.Services
             administrateur.date_created = DateTime.Now;
 
             byte[] passwordHash, passwordSalt;
-            SecurityService.CreatePasswordHash(model.passe, out passwordHash, out passwordSalt);
+            SecurityService.CreatePasswordHash(model.Passe, out passwordHash, out passwordSalt);
             administrateur.password = passwordHash;
             administrateur.salt = passwordSalt;
             // Le probleme est la condition

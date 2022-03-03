@@ -6,14 +6,14 @@ namespace emmad.Models
     public class CreateAdministrateurRequest
     {
         [Required]
-        public string prenom { get; set; }
+        public string Prenom { get; set; }
         [Required]
-        public string nom { get; set; }
+        public string Nom { get; set; }
         [Required]
         [EmailAddress]
-        public string email { get; set; }
+        public string Email { get; set; }
         [Required]
-        public string passe { get; set; }
+        public string Passe { get; set; }
 
     }
 }

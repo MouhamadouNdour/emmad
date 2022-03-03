@@ -25,7 +25,7 @@ namespace emmad.Controllers
             Service = _service;
         }
 
-
+        
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginRequest Model)
         {

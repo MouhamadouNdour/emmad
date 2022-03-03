@@ -6,9 +6,9 @@ namespace emmad.Models
     {
         [Required]
         [EmailAddress]
-        public string email { get; set; }
+        public string Email { get; set; }
 
         [Required]
-        public string passe { get; set; }
+        public string Passe { get; set; }
     }
 }
