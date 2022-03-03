@@ -129,6 +129,8 @@ namespace emmad.Services
                 to: admin.email,
                 subject: "[Emmad Application] - Nouvelle inscription dans notre application",
                 html: $@"<h4>Bienvenue</h4>
+                         <p> Voici le lien vers la doc d'utilisation de l'API : </p>
+                         <a href'https://github.com/MouhamadouNdour/emmad/blob/main/README.md'>Documentation</a>
                          <p>Merci pour votre inscription !</p>
                          {message}"
             );
