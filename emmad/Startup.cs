@@ -52,6 +52,23 @@ namespace emmad
             services.AddControllers();
             services.AddScoped<IEmail, EmailService>();
             services.AddScoped<IAdministrateur, AdministrateurService>();
+            services.AddScoped<IOrganisation, OrganisationService>();
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+                {
+                    Title = "Emmad API",
+                    Version = "v1",
+                    Description = "API Emmad",
+                    Contact = new Microsoft.OpenApi.Models.OpenApiContact
+                    {
+                        Name = "Mouss",
+                        Email = String.Empty,
+                        Url = new Uri("https://emmad.com")
+                    }
+                });
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -61,6 +78,14 @@ namespace emmad
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseSwagger();
+
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Emmad API");
+                c.RoutePrefix = string.Empty;
+            });
 
             app.UseRouting();
 

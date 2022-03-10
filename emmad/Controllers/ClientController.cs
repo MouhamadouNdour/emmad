@@ -3,29 +3,32 @@ using emmad.Interface;
 using emmad.Models;
 using Microsoft.AspNetCore.Mvc;
 using System;
+
 namespace emmad.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class OrganisationController : BaseController
+    public class ClientController : BaseController
     {
-        private IOrganisation Service;
 
-        public OrganisationController(IOrganisation _service)
+        private IClient Service;
+
+        public ClientController(IClient _service)
         {
             Service = _service;
         }
 
+
         [HttpPost]
         [Authorize]
-        public IActionResult CreateOrganisation(CreateOrganisationRequest model)
+        public IActionResult CreateClient(CreateClientRequest model)
         {
             try
             {
                 return Ok(new
                 {
-                    data = Service.CreateOrganisation(Administrateur, model),
-                    message = "Organisation créée avec succès."
+                    data = Service.CreateClient(Administrateur, model),
+                    message = "Client créé avec succès."
                 });
             }
             catch (Exception ex)
@@ -34,5 +37,6 @@ namespace emmad.Controllers
             }
 
         }
+
     }
 }

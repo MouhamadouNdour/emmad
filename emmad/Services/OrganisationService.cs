@@ -52,7 +52,7 @@ namespace emmad.Services
             MasterContext.organisation.Add(organisation);
             MasterContext.SaveChanges();
 
-            return Mapper.Map<CreateOrganisationResponse>(administrateur);
+            return Mapper.Map<CreateOrganisationResponse>(organisation);
 
         }
     }
