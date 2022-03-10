@@ -106,10 +106,7 @@ namespace emmad.Services
             SecurityService.CreatePasswordHash(model.passe, out passwordHash, out passwordSalt);
             administrateur.password = passwordHash;
             administrateur.salt = passwordSalt;
-            // Le probleme est la condition
-            Console.WriteLine(date_crea);
-            Console.WriteLine(administrateur.id);
-            Console.WriteLine(connectedUser.id);
+
             administrateur.id_createur = connectedUser.id;
 
             SendEmailVerification(administrateur);
