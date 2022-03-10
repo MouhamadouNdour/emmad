@@ -19,16 +19,20 @@ namespace emmad.Controllers
     {
 
         private IAdministrateur Service;
+        private readonly ILogger _logger;
 
-        public AdministrateurController(IAdministrateur _service)
+        public AdministrateurController(IAdministrateur _service, ILoggerFactory logFactory)
         {
             Service = _service;
+            _logger = logFactory.CreateLogger<AdministrateurController>();
         }
 
         
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginRequest Model)
         {
+            _logger.LogInformation("Log message in the Login method");
+
             try
             {
                 var response = Service.Login(Model);
@@ -45,11 +49,37 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult CreateAdministrateur(CreateAdministrateurRequest model)
         {
+            _logger.LogInformation("Log message in the Create method");
             try
             {
                 return Ok(new {
                     data = Service.CreateAdministrateur(Administrateur, model),
                     message = "Administrateur créé avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+        [HttpDelete("{id:int}")]
+        [Authorize]
+        public IActionResult DeleteAdministrateur(int id)
+        {
+            _logger.LogInformation("Log message in the Delete method");
+            try
+            {
+                if (id != Administrateur.id)
+                {
+                    return Unauthorized(new { message = "Unauthorized" });
+                }
+
+                Service.DeleteAdministrateur(id);
+
+                return Ok(new
+                {
+                    message = "Administrateur supprimé avec succès."
                 });
             }
             catch (Exception ex)

@@ -117,6 +117,17 @@ namespace emmad.Services
             return Mapper.Map<CreateResponse>(administrateur);
         }
 
+        public void DeleteAdministrateur(int id)
+        {
+            var administrateur = MasterContext.administrateur.Find(id);
+
+            if (administrateur != null)
+            {
+                MasterContext.administrateur.Remove(administrateur);
+                MasterContext.SaveChanges();
+            }
+        }
+
         private void SendEmailVerification(Administrateur admin)
         {
             string message = $@"<p>Commencez dès maintenant à utiliser notre API</p>

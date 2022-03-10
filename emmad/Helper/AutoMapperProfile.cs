@@ -11,7 +11,9 @@ namespace emmad.Helper
             CreateMap<CreateAdministrateurRequest, Administrateur>();
             CreateMap<Administrateur, CreateResponse>();
             CreateMap<CreateOrganisationRequest, Organisation>();
+            CreateMap<CreateClientRequest, Client>();
             CreateMap<Organisation, CreateOrganisationResponse>();
+            CreateMap<Client, CreateClientResponse>();
         }
     }
 }

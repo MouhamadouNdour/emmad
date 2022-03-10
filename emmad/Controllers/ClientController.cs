@@ -18,7 +18,6 @@ namespace emmad.Controllers
             Service = _service;
         }
 
-
         [HttpPost]
         [Authorize]
         public IActionResult CreateClient(CreateClientRequest model)

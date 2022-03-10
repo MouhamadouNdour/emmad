@@ -53,6 +53,7 @@ namespace emmad
             services.AddScoped<IEmail, EmailService>();
             services.AddScoped<IAdministrateur, AdministrateurService>();
             services.AddScoped<IOrganisation, OrganisationService>();
+            services.AddScoped<IClient, ClientService>();
 
             services.AddSwaggerGen(c =>
             {
@@ -72,7 +73,7 @@ namespace emmad
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {

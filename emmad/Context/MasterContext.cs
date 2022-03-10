@@ -24,6 +24,11 @@ namespace emmad.Context
                 .HasOne(r => r.Client)
                 .WithMany()
                 .HasForeignKey(r => r.id_client);
+
+            model.Entity<Client>()
+                .HasOne(o => o.Organisation)
+                .WithMany()
+                .HasForeignKey(o => o.id_organisation);
         }
 
         public DbSet<Administrateur> administrateur { get; set; }

@@ -11,7 +11,9 @@ namespace emmad.Models
         [Required]
         public string email { get; set; }
         [Required]
+        [StringLength(10)]
         public string telephone { get; set; }
         public int age { get; set; }
+        public int societe { get; set; }
     }
 }
