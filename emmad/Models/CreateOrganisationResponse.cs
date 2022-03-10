@@ -1,4 +1,5 @@
-﻿namespace emmad.Models
+﻿using System;
+namespace emmad.Models
 {
     public class CreateOrganisationResponse
     {
