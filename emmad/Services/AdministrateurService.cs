@@ -123,6 +123,26 @@ namespace emmad.Services
 
             if (administrateur != null)
             {
+                var organisations = MasterContext.organisation
+                                    .Where(o => o.id_administrateur == id)
+                                    .ToList();
+
+                foreach(var organisation in organisations)
+                {
+                    var clients = MasterContext.client
+                                    .Where(c => c.id_organisation == organisation.id)
+                                    .ToList();
+
+                    foreach(var client in clients)
+                    {
+                        MasterContext.client.Remove(client);
+                        MasterContext.SaveChanges();
+                    }
+
+                    MasterContext.organisation.Remove(organisation);
+                    MasterContext.SaveChanges();
+                }
+
                 MasterContext.administrateur.Remove(administrateur);
                 MasterContext.SaveChanges();
             }

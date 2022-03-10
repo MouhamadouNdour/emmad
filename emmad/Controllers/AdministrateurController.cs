@@ -72,7 +72,7 @@ namespace emmad.Controllers
             {
                 if (id != Administrateur.id)
                 {
-                    return Unauthorized(new { message = "Unauthorized" });
+                    return Unauthorized(new { message = "Vous n'avez pas les droits nécessaires" });
                 }
 
                 Service.DeleteAdministrateur(id);
