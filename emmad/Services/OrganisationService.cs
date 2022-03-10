@@ -6,6 +6,7 @@ using emmad.Models;
 using emmad.Settings;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace emmad.Services
@@ -55,5 +56,17 @@ namespace emmad.Services
             return Mapper.Map<CreateOrganisationResponse>(organisation);
 
         }
+
+        public IEnumerable GetOrganisation(Administrateur administrateur)
+        {
+
+           var ListOrganisation = MasterContext.organisation
+                        .Where(a => a.id_administrateur == administrateur.id)
+                        .ToList();
+
+            return ListOrganisation;
+
+        }
     }
+    
 }
