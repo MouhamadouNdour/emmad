@@ -37,5 +37,21 @@ namespace emmad.Controllers
 
         }
 
+
+        [HttpGet("{idOrganisation:int}")]
+        [Authorize]
+        public IActionResult GetClient(int idOrganisation)
+        {
+            try
+            {
+                return Ok(Service.GetClient(Administrateur, idOrganisation));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
     }
 }

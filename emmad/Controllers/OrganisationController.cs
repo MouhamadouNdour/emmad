@@ -34,5 +34,21 @@ namespace emmad.Controllers
             }
 
         }
+
+        [HttpGet]
+        public IActionResult GetOrganisation()
+        {
+            try
+            {
+                return Ok(Service.GetOrganisation(Administrateur));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
+        }
+
+
     }
 }
