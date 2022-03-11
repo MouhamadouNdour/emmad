@@ -4,6 +4,7 @@ using emmad.Entity;
 using emmad.Interface;
 using emmad.Models;
 using emmad.Settings;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using System;
 using System.Linq;
@@ -63,6 +64,21 @@ namespace emmad.Services
 
             var client = Mapper.Map<Client>(model);
             client.id_organisation = model.societe;
+
+            if(model.photos != null)
+            {
+                foreach (var photo in model.photos)
+                {
+                    var photoExtension = HelperService.GetFileExtension(photo);
+                    byte[] photoByte = Convert.FromBase64String(photo);
+
+                    string fileName = DateTime.Now.ToString() + "-" + client.nom + client.prenom + "."+ photoExtension;
+                    var response = new FileContentResult(photoByte, photoExtension == "jpg" ? "image/jpeg" : photoExtension);
+                    response.FileDownloadName = fileName;
+
+
+                }
+            }
 
             MasterContext.client.Add(client);
             MasterContext.SaveChanges();

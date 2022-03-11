@@ -15,5 +15,6 @@ namespace emmad.Models
         public string telephone { get; set; }
         public int age { get; set; }
         public int societe { get; set; }
+        public string[]? photos { get; set; }
     }
 }
