@@ -67,6 +67,27 @@ namespace emmad.Services
             return ListOrganisation;
 
         }
+
+
+        public void DeleteOrganisation(Administrateur connectedUser, int idOrganisation)
+        {
+            var organisation = MasterContext.organisation.Find(idOrganisation);
+
+            var clients = MasterContext.client
+                            .Where(c => c.id_organisation == organisation.id)
+                            .ToList();
+
+            foreach (var client in clients)
+            {
+                MasterContext.client.Remove(client);
+                MasterContext.SaveChanges();
+            }
+
+            MasterContext.organisation.Remove(organisation);
+            MasterContext.SaveChanges();
+
+        }
+
     }
     
 }

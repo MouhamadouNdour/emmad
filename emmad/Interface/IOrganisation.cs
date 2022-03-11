@@ -8,6 +8,7 @@ namespace emmad.Interface
     {
         public CreateOrganisationResponse CreateOrganisation(Administrateur administrateur, CreateOrganisationRequest model);
         public IEnumerable GetOrganisation(Administrateur administrateur);
+        public void DeleteOrganisation(Administrateur administrateur, int idOrganisation);
 
 
     }

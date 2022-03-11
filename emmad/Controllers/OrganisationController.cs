@@ -49,6 +49,25 @@ namespace emmad.Controllers
 
         }
 
+        [HttpDelete("{idOrganisation:int}")]
+        [Authorize]
+        public IActionResult DeleteOrganisation(int idOrganisation)
+        {
+            try
+            {
+                Service.DeleteOrganisation(Administrateur, idOrganisation);
 
-    }
+                return Ok(new
+                {
+                    message = "Organisation supprimé avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+     }
+
 }
+
