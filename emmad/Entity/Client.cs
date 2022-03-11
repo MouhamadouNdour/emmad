@@ -5,8 +5,6 @@ namespace emmad.Entity
 {
     public class Client
     {
-        internal int id_administrateur;
-
         [Key]
         public int id { get; set; }
         public int id_organisation { get; set; }
