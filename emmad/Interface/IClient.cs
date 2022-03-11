@@ -8,5 +8,6 @@ namespace emmad.Interface
     {
         public CreateClientResponse CreateClient(Administrateur administrateur, CreateClientRequest model);
         public IEnumerable GetClient(Administrateur administrateur, int idOrganisation);
+        public void DeleteClient(Administrateur administrateur,int idOrganisation, int idClient);
     }
 }

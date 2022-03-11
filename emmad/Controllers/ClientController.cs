@@ -37,6 +37,24 @@ namespace emmad.Controllers
 
         }
 
+        [HttpDelete("{idOrganisation:int}/{idClient:int}")]
+        [Authorize]
+        public IActionResult DeleteClient(int idOrganisation, int idClient)
+        {
+            try
+            {
+                Service.DeleteClient(Administrateur, idOrganisation, idClient);
+
+                return Ok(new
+                {
+                    message = "Client supprimé avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
 
         [HttpGet("{idOrganisation:int}")]
         [Authorize]
