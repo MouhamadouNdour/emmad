@@ -6,6 +6,7 @@ using emmad.Models;
 using emmad.Settings;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections;
 using System.Linq;
 
 namespace emmad.Services
@@ -68,6 +69,16 @@ namespace emmad.Services
             MasterContext.SaveChanges();
 
             return Mapper.Map<CreateClientResponse>(client);
+        }
+
+        public IEnumerable GetClient(Administrateur administrateur, int idOrganisation )
+        {
+            var ListClient  = MasterContext.client
+                         .Where(i => i.id_organisation == idOrganisation)
+                         .ToList();
+
+            return ListClient;
+
         }
 
     }
