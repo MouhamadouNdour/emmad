@@ -3,6 +3,7 @@ using emmad.Context;
 using emmad.Entity;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using emmad.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -110,10 +111,12 @@ namespace emmad.Services
 
         }
 
-        public IEnumerable GetOrganisation(Administrateur administrateur)
+        public IEnumerable GetOrganisation(Administrateur administrateur, OrganisationParameters organisationParameters)
         {
            var ListOrganisation = MasterContext.organisation
                         .Where(a => a.id_administrateur == administrateur.id)
+                        .Skip((organisationParameters.page - 1) * organisationParameters.size)
+                        .Take(organisationParameters.size)
                         .ToList();
 
             List<Organisation> organisationsResponse = new List<Organisation>();

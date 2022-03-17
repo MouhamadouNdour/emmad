@@ -1,6 +1,7 @@
 ﻿using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using Microsoft.AspNetCore.Mvc;
 using System;
 namespace emmad.Controllers
@@ -36,11 +37,11 @@ namespace emmad.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetOrganisation()
+        public IActionResult GetOrganisation([FromQuery] OrganisationParameters organisationParameters)
         {
             try
             {
-                return Ok(Service.GetOrganisation(Administrateur));
+                return Ok(Service.GetOrganisation(Administrateur, organisationParameters));
             }
             catch (Exception ex)
             {
