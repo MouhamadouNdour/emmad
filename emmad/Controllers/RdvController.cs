@@ -35,5 +35,24 @@ namespace emmad.Controllers
             }
 
         }
+
+        [HttpDelete("{idRdv:int}/{idClient:int}")]
+        [Authorize]
+        public IActionResult DeleteRdv(int idRdv ,int idClient)
+        {
+            try
+            {
+                Service.DeleteRdv(Administrateur, idRdv, idClient);
+
+                return Ok(new
+                {
+                    message = "Rdv supprimé avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }

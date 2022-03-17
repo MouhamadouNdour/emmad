@@ -41,7 +41,7 @@ namespace emmad.Services
             {
                 throw new Exception("Date : Vide");
             }
-            
+
 
             var rdv = Mapper.Map<Rdv>(model);
             rdv.id_client = model.id_client;
@@ -53,5 +53,21 @@ namespace emmad.Services
             return Mapper.Map<CreateRdvResponse>(rdv);
 
         }
+
+        public void DeleteRdv(Administrateur connectedUser, int idRdv, int idClient)
+        {
+
+            //var organisation = MasterContext.organisation.Find();
+                var client = MasterContext.client.Find(idClient);
+                var rdv = MasterContext.rdv
+                    .FirstOrDefault(r => r.id_client == client.id && r.id == idRdv);
+           
+
+            MasterContext.rdv.Remove(rdv);
+            MasterContext.SaveChanges();
+      
+
+        }
+
     }
 }
