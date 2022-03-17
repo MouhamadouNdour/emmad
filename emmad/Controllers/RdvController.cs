@@ -36,13 +36,13 @@ namespace emmad.Controllers
 
         }
 
-        [HttpDelete("{idRdv:int}/{idClient:int}")]
+        [HttpDelete("{idRdv:int}")]
         [Authorize]
-        public IActionResult DeleteRdv(int idRdv ,int idClient)
+        public IActionResult DeleteRdv(int idRdv)
         {
             try
             {
-                Service.DeleteRdv(Administrateur, idRdv, idClient);
+                Service.DeleteRdv(Administrateur, idRdv);
 
                 return Ok(new
                 {
