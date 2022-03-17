@@ -111,12 +111,12 @@ namespace emmad.Services
 
         }
 
-        public IEnumerable GetOrganisation(Administrateur administrateur, OrganisationParameters organisationParameters)
+        public IEnumerable GetOrganisation(Administrateur administrateur, PageParameters pageParameters)
         {
            var ListOrganisation = MasterContext.organisation
                         .Where(a => a.id_administrateur == administrateur.id)
-                        .Skip((organisationParameters.page - 1) * organisationParameters.size)
-                        .Take(organisationParameters.size)
+                        .Skip((pageParameters.page - 1) * pageParameters.size)
+                        .Take(pageParameters.size)
                         .ToList();
 
             List<Organisation> organisationsResponse = new List<Organisation>();

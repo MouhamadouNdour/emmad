@@ -37,11 +37,11 @@ namespace emmad.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetOrganisation([FromQuery] OrganisationParameters organisationParameters)
+        public IActionResult GetOrganisation([FromQuery] PageParameters pageParameters)
         {
             try
             {
-                return Ok(Service.GetOrganisation(Administrateur, organisationParameters));
+                return Ok(Service.GetOrganisation(Administrateur, pageParameters));
             }
             catch (Exception ex)
             {

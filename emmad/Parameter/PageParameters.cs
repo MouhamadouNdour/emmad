@@ -1,6 +1,6 @@
 ﻿namespace emmad.Parameter
 {
-    public class OrganisationParameters
+    public class PageParameters
     {
         public int page { get; set; } = 1;
         private int maxSize = 20;
