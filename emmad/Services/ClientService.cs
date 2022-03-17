@@ -191,13 +191,38 @@ namespace emmad.Services
         public void DeleteClient(Administrateur connectedUser,int idOrganisation, int idClient)
         {
 
-            var organisation = MasterContext.organisation.Find(idOrganisation);
+            var client = MasterContext.client.Find(idClient);
 
-            var client = MasterContext.client
-                            .FirstOrDefault(c => c.id_organisation == organisation.id && c.id == idClient);
+            if (client == null)
+            {
+                throw new Exception("Ce client n'existe pas.");
+            }
 
-                   MasterContext.client.Remove(client);
-                   MasterContext.SaveChanges();
+            var organisation = MasterContext.organisation.Find(client.id_organisation);
+
+            if (client == null)
+            {
+                throw new Exception("Ce client n'a pas d'organisation.");
+            }
+
+            if (organisation.id_administrateur != connectedUser.id)
+            {
+                throw new Exception("Vous n'avez pas les droits de supprimer ce rdv.");
+            }
+
+            var rdvs = MasterContext.rdv
+                            .Where(r =>r.id_client == client.id)
+                            .ToList();
+
+            foreach (var rdv in rdvs)
+            {
+                MasterContext.rdv.Remove(rdv);
+                MasterContext.SaveChanges();
+            }
+
+            MasterContext.client.Remove(client);
+            MasterContext.SaveChanges();
+
         }
 
     }

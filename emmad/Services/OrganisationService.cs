@@ -149,12 +149,32 @@ namespace emmad.Services
         {
             var organisation = MasterContext.organisation.Find(idOrganisation);
 
+            if (organisation == null)
+            {
+                throw new Exception("Cette organisation n'existe pas.");
+            }
+
+            if (organisation.id_administrateur != connectedUser.id)
+            {
+                throw new Exception("Vous n'avez pas les droits de supprimer ce rdv.");
+            }
+
             var clients = MasterContext.client
                             .Where(c => c.id_organisation == organisation.id)
                             .ToList();
 
             foreach (var client in clients)
             {
+                var rdvs = MasterContext.rdv
+                            .Where(r => r.id_client == client.id)
+                            .ToList();
+
+                foreach (var rdv in rdvs)
+                {
+                    MasterContext.rdv.Remove(rdv);
+                    MasterContext.SaveChanges();
+                }
+
                 MasterContext.client.Remove(client);
                 MasterContext.SaveChanges();
             }
