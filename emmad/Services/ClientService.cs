@@ -5,7 +5,6 @@ using emmad.Interface;
 using emmad.Models;
 using emmad.Settings;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
