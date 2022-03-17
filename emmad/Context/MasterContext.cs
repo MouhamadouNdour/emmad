@@ -12,7 +12,7 @@ namespace emmad.Context
         {
             model.Entity<Photo>()
                 .HasOne(p => p.Client)
-                .WithMany()
+                .WithMany(c => c.Photos)
                 .HasForeignKey(p => p.id_client);
 
             model.Entity<Organisation>()

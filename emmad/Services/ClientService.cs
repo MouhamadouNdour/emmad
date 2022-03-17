@@ -5,10 +5,14 @@ using emmad.Interface;
 using emmad.Models;
 using emmad.Settings;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 
 namespace emmad.Services
 {
@@ -66,35 +70,120 @@ namespace emmad.Services
             var client = Mapper.Map<Client>(model);
             client.id_organisation = model.societe;
 
-            if(model.photos != null)
+            MasterContext.client.Add(client);
+            MasterContext.SaveChanges();
+
+            if (model.photos != null)
             {
                 foreach (var photo in model.photos)
                 {
                     var photoExtension = HelperService.GetFileExtension(photo);
                     byte[] photoByte = Convert.FromBase64String(photo);
 
-                    string fileName = DateTime.Now.ToString() + "-" + client.nom + client.prenom + "."+ photoExtension;
-                    var response = new FileContentResult(photoByte, photoExtension == "jpg" ? "image/jpeg" : photoExtension);
-                    response.FileDownloadName = fileName;
+                    string fileName = DateTime.Now.ToString() + "-" + client.nom + client.prenom + "." + photoExtension;
+                    var fileContent = new FileContentResult(photoByte, photoExtension == "jpg" ? "image/jpeg" : photoExtension);
+                    fileContent.FileDownloadName = fileName;
+                    fileName = fileName.Replace("/", "-").Replace(" ", "-").Replace(":", "-");
+                    Console.WriteLine(fileName);
 
+                    //FTP Server URL.
+                    string ftp = "ftp://198.37.116.42/";
 
+                    //FTP Folder name. Leave blank if you want to upload to root folder.
+                    string ftpFolder = "www.emmad.somee.com/media/";
+
+                    try
+                    {
+                        FtpWebRequest request = (FtpWebRequest)WebRequest.Create(ftp + ftpFolder + fileName);
+                        request.Method = WebRequestMethods.Ftp.UploadFile;
+
+                        //Enter FTP Server credentials.
+                        request.Credentials = new NetworkCredential("emmad", "Bonjourdu13");
+                        request.ContentLength = photoByte.Length;
+                        request.UsePassive = true;
+                        request.UseBinary = true;
+                        request.ServicePoint.ConnectionLimit = photoByte.Length;
+                        request.EnableSsl = false;
+
+                        using (Stream requestStream = request.GetRequestStream())
+                        {
+                            requestStream.Write(photoByte, 0, photoByte.Length);
+                            requestStream.Close();
+                        }
+
+                        FtpWebResponse response = (FtpWebResponse)request.GetResponse();
+                        Console.WriteLine(fileName + " uploaded.<br />");
+                        response.Close();
+
+                        var photoDB = new Photo() {
+                            id_client = client.id,
+                            lien = fileName
+                        };
+
+                        MasterContext.photo.Add(photoDB);
+                        MasterContext.SaveChanges();
+                    }
+                    catch (WebException ex)
+                    {
+                        throw new Exception((ex.Response as FtpWebResponse).StatusDescription);
+                    }
                 }
             }
-
-            MasterContext.client.Add(client);
-            MasterContext.SaveChanges();
 
             return Mapper.Map<CreateClientResponse>(client);
         }
 
         public IEnumerable GetClient(Administrateur administrateur, int idOrganisation )
         {
-            var ListClient  = MasterContext.client
-                         .Where(i => i.id_organisation == idOrganisation)
+            var clients  = MasterContext.client
+                         .Where(c => c.id_organisation == idOrganisation)
+                         .Select(c => new
+                         {
+                             c.id,
+                             c.prenom,
+                             c.nom,
+                             c.email,
+                             c.telephone,
+                             c.age,
+                             c.id_organisation,
+                             c.Organisation,
+                             Photos = c.Photos
+                                        .Where(p => p.id_client == c.id)
+                                        .Select(p => new
+                                        {
+                                            p.id,
+                                            p.lien,
+                                            p.id_client
+                                        })
+                         })
                          .ToList();
 
-            return ListClient;
+            var photosResponse = new List<PhotoResponse>();
+            var clientsResponse = new List<GetClientResponse>();
 
+            foreach (var client in clients)
+            {
+                foreach(var photo in client.Photos)
+                {
+                    var photoResponse = new PhotoResponse { lien = "http://www.emmad.somee.com/media/"+photo.lien };
+                    photosResponse.Add(photoResponse);
+                }
+                var clientResponse = new GetClientResponse
+                {
+                    id = client.id,
+                    id_organisation = client.id_organisation,
+                    nom = client.nom,
+                    prenom = client.prenom,
+                    email = client.email,
+                    telephone = client.telephone,
+                    age = client.age,
+                    Organisation = client.Organisation,
+                    Photos = photosResponse
+                };
+                clientsResponse.Add(clientResponse);
+            }
+
+            return clientsResponse;
         }
 
     }

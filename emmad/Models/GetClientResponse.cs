@@ -1,12 +1,10 @@
-﻿using System;
+﻿using emmad.Entity;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 
-namespace emmad.Entity
+namespace emmad.Models
 {
-    public class Client
+    public class GetClientResponse
     {
-        [Key]
         public int id { get; set; }
         public int id_organisation { get; set; }
         public string nom { get; set; }
@@ -15,6 +13,6 @@ namespace emmad.Entity
         public string telephone { get; set; }
         public int? age { get; set; }
         public Organisation Organisation { get; set; }
-        public ICollection<Photo> Photos { get; set; }
+        public List<PhotoResponse> Photos { get; set; }
     }
 }

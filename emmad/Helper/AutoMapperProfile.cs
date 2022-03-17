@@ -11,7 +11,8 @@ namespace emmad.Helper
             CreateMap<CreateAdministrateurRequest, Administrateur>();
             CreateMap<Administrateur, CreateResponse>();
             CreateMap<CreateOrganisationRequest, Organisation>();
-            CreateMap<CreateClientRequest, Client>();
+            CreateMap<CreateClientRequest, Client>()
+                .ForMember(c => c.Photos, opt => opt.Ignore());
             CreateMap<Organisation, CreateOrganisationResponse>();
             CreateMap<Client, CreateClientResponse>();
         }
