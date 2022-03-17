@@ -1,17 +1,14 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace emmad.Entity
+namespace emmad.Models
 {
-    public class Rdv
+    public class CreateRdvResponse
     {
-        [Key]
         public int id { get; set; }
         public string resume { get; set; }
         public DateTime date { get; set; }
         public string lieu { get; set; }
         public int id_client { get; set; }
-        public Client Client { get; set; }
-        
     }
 }

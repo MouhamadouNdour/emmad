@@ -15,6 +15,8 @@ namespace emmad.Helper
                 .ForMember(c => c.Photos, opt => opt.Ignore());
             CreateMap<Organisation, CreateOrganisationResponse>();
             CreateMap<Client, CreateClientResponse>();
+            CreateMap<CreateRdvRequest, Rdv>();
+            CreateMap<Rdv, CreateRdvResponse>();
         }
     }
 }
