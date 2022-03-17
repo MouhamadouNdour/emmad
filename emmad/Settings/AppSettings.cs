@@ -14,6 +14,6 @@
         public string FTPserver { get; set; }
         public string FTPfolder { get; set; }
         public string FTPusername { get; set; }
-        public string FTPpasword { get; set; }
+        public string FTPpassword { get; set; }
     }
 }

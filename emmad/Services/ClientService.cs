@@ -80,7 +80,7 @@ namespace emmad.Services
                     byte[] photoByte = Convert.FromBase64String(photo);
 
                     string fileName = DateTime.Now.ToString() + "-" + client.nom + client.prenom + "." + photoExtension;
-                    var fileContent = new FileContentResult(photoByte, photoExtension == "jpg" ? "image/jpeg" : photoExtension);
+                    var fileContent = new FileContentResult(photoByte, photoExtension == "jpg" ? "image/jpeg" : "image/" + photoExtension);
                     fileContent.FileDownloadName = fileName;
                     fileName = fileName.Replace("/", "-").Replace(" ", "-").Replace(":", "-");
                     Console.WriteLine(fileName);
@@ -97,7 +97,7 @@ namespace emmad.Services
                         request.Method = WebRequestMethods.Ftp.UploadFile;
 
                         //Enter FTP Server credentials.
-                        request.Credentials = new NetworkCredential(appSettings.FTPusername, appSettings.FTPpasword);
+                        request.Credentials = new NetworkCredential(appSettings.FTPusername, appSettings.FTPpassword);
                         request.ContentLength = photoByte.Length;
                         request.UsePassive = true;
                         request.UseBinary = true;

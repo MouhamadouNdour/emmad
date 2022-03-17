@@ -10,5 +10,6 @@ namespace emmad.Models
         public string adresse { get; set; }
         [Required]
         public int nb_salarie { get; set; }
+        public string? logo { get; set; }
     }
 }
