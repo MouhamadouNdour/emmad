@@ -54,6 +54,7 @@ namespace emmad
             services.AddScoped<IAdministrateur, AdministrateurService>();
             services.AddScoped<IOrganisation, OrganisationService>();
             services.AddScoped<IClient, ClientService>();
+            services.AddScoped<IRdv, RdvService>();
 
             services.AddSwaggerGen(c =>
             {
