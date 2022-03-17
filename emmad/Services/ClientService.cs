@@ -186,5 +186,17 @@ namespace emmad.Services
             return clientsResponse;
         }
 
+        public void DeleteClient(Administrateur connectedUser,int idOrganisation, int idClient)
+        {
+
+            var organisation = MasterContext.organisation.Find(idOrganisation);
+
+            var client = MasterContext.client
+                            .FirstOrDefault(c => c.id_organisation == organisation.id && c.id == idClient);
+
+                   MasterContext.client.Remove(client);
+                   MasterContext.SaveChanges();
+        }
+
     }
 }
