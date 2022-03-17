@@ -5,6 +5,14 @@
   </PropertyGroup>
 
   <PropertyGroup Condition=" '$(RunConfiguration)' == 'emmad (Dev)' " />
+
+  <ItemGroup>
+    <Content Remove="appSettings.Production.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="appSettings.Production.json" />
+  </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="11.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />

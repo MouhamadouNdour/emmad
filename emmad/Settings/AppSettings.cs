@@ -11,5 +11,9 @@
         public int SmtpPort { get; set; }
         public string SmtpUser { get; set; }
         public string SmtpPass { get; set; }
+        public string FTPserver { get; set; }
+        public string FTPfolder { get; set; }
+        public string FTPusername { get; set; }
+        public string FTPpasword { get; set; }
     }
 }

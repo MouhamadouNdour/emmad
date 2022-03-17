@@ -86,10 +86,10 @@ namespace emmad.Services
                     Console.WriteLine(fileName);
 
                     //FTP Server URL.
-                    string ftp = "ftp://198.37.116.42/";
+                    string ftp = appSettings.FTPserver;
 
                     //FTP Folder name. Leave blank if you want to upload to root folder.
-                    string ftpFolder = "www.emmad.somee.com/media/";
+                    string ftpFolder = appSettings.FTPfolder;
 
                     try
                     {
@@ -97,7 +97,7 @@ namespace emmad.Services
                         request.Method = WebRequestMethods.Ftp.UploadFile;
 
                         //Enter FTP Server credentials.
-                        request.Credentials = new NetworkCredential("emmad", "Bonjourdu13");
+                        request.Credentials = new NetworkCredential(appSettings.FTPusername, appSettings.FTPpasword);
                         request.ContentLength = photoByte.Length;
                         request.UsePassive = true;
                         request.UseBinary = true;
