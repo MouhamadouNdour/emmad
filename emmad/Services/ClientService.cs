@@ -3,6 +3,7 @@ using emmad.Context;
 using emmad.Entity;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using emmad.Settings;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
@@ -132,10 +133,12 @@ namespace emmad.Services
             return Mapper.Map<CreateClientResponse>(client);
         }
 
-        public IEnumerable GetClient(Administrateur administrateur, int idOrganisation )
+        public IEnumerable GetClient(Administrateur administrateur, int idOrganisation, PageParameters pageParameters)
         {
             var clients  = MasterContext.client
                          .Where(c => c.id_organisation == idOrganisation)
+                         .Skip((pageParameters.page - 1) * pageParameters.size)
+                         .Take(pageParameters.size)
                          .Select(c => new
                          {
                              c.id,

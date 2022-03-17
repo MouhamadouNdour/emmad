@@ -1,6 +1,7 @@
 ﻿using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using Microsoft.AspNetCore.Mvc;
 using System;
 
@@ -58,11 +59,11 @@ namespace emmad.Controllers
 
         [HttpGet("{idOrganisation:int}")]
         [Authorize]
-        public IActionResult GetClient(int idOrganisation)
+        public IActionResult GetClient(int idOrganisation, [FromQuery] PageParameters pageParameters)
         {
             try
             {
-                return Ok(Service.GetClient(Administrateur, idOrganisation));
+                return Ok(Service.GetClient(Administrateur, idOrganisation, pageParameters));
             }
             catch (Exception ex)
             {
