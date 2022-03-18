@@ -27,8 +27,19 @@ namespace emmad.Services
             appSettings = settings.Value;
         }
 
+
         public CreateRdvResponse CreateRdv(Administrateur administrateur, CreateRdvRequest model)
         {
+
+            var client = MasterContext.client.Find(model.id_client);
+
+            var organisation = MasterContext.organisation.Find(client.id_organisation);
+
+            if (organisation.id_administrateur != administrateur.id)
+            {
+                throw new Exception("Vous n'avez pas les droits de supprimer ce rdv.");
+            }
+
             if (string.IsNullOrWhiteSpace(model.resume))
             {
                 throw new Exception("resume : Vide");
@@ -45,6 +56,15 @@ namespace emmad.Services
                 throw new Exception("Date : Vide");
             }
 
+            var existingDateForClient = MasterContext.rdv
+                                                .FirstOrDefault(c => c.date == dateRdv
+                                                && c.id_client == model.id_client);
+
+            if (existingDateForClient != null)
+            {
+                throw new Exception("Un Rdv pour ce client à cette date existe déjà email.");
+            }
+
 
             var rdv = Mapper.Map<Rdv>(model);
             rdv.id_client = model.id_client;
@@ -56,6 +76,7 @@ namespace emmad.Services
             return Mapper.Map<CreateRdvResponse>(rdv);
 
         }
+
 
         public void DeleteRdv(Administrateur connectedUser, int id)
         {
