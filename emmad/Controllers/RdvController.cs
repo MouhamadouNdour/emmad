@@ -2,6 +2,7 @@
 using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace emmad.Controllers
@@ -53,6 +54,21 @@ namespace emmad.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
+        }
+
+        [HttpGet("{idClient:int}")]
+        [Authorize]
+        public IActionResult GetClient(int idClient, [FromQuery] PageParameters pageParameters)
+        {
+            try
+            {
+                return Ok(Service.GetRdv(Administrateur, idClient, pageParameters));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+
         }
     }
 }
