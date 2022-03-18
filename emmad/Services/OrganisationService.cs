@@ -184,6 +184,32 @@ namespace emmad.Services
 
         }
 
+
+
+        public OrganisationResponse Update(Administrateur administrateur, int idOrganisation, UpdateOrganisationRequest model)
+        {
+
+            var organisation = MasterContext.organisation.Find(idOrganisation);
+
+            if (organisation == null)
+            {
+                throw new Exception("Cette organisation n'existe pas.");
+            }
+            if (organisation.id_administrateur == administrateur.id)
+            { 
+                // Copie du model au l'entite organisation
+                Mapper.Map(model, organisation);
+                MasterContext.organisation.Update(organisation);
+                MasterContext.SaveChanges();
+
+                return Mapper.Map<OrganisationResponse>(organisation);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Vous n'avez pas les droits de supprimer cete organisation.");
+            }
+        }
+
     }
     
 }

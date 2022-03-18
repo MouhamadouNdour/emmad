@@ -18,7 +18,9 @@ namespace emmad.Helper
             CreateMap<CreateRdvRequest, Rdv>();
             CreateMap<Rdv, CreateRdvResponse>();
             CreateMap<Administrateur, AdministrateurResponse>();
-            CreateMap<UpdateAdministrateurRequest, Administrateur>()
+            CreateMap<UpdateAdministrateurRequest, Administrateur>();
+            CreateMap<Organisation, OrganisationResponse>();
+            CreateMap<UpdateOrganisationRequest, Organisation>()
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
                     {

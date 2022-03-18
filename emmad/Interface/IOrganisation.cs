@@ -10,8 +10,7 @@ namespace emmad.Interface
         public CreateOrganisationResponse CreateOrganisation(Administrateur administrateur, CreateOrganisationRequest model);
         public IEnumerable GetOrganisation(Administrateur administrateur, PageParameters pageParameters);
         public void DeleteOrganisation(Administrateur administrateur, int idOrganisation);
-
-
+        public OrganisationResponse Update(Administrateur administrateur, int idOrganisation, UpdateOrganisationRequest model);
     }
 }
    

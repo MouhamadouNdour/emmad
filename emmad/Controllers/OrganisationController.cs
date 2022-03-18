@@ -1,4 +1,5 @@
-﻿using emmad.Helper;
+﻿using emmad.Entity;
+using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
 using emmad.Parameter;
@@ -68,7 +69,28 @@ namespace emmad.Controllers
                 return BadRequest(new { message = ex.Message });
             }
         }
-     }
+
+        [HttpPut("{idOrganisation:int}")]
+        [Authorize]
+        public IActionResult Update(int idOrganisation, UpdateOrganisationRequest model)
+        {
+            try
+            {
+                return Ok(new
+                {
+                    data = Service.Update(Administrateur, idOrganisation, model),
+                    message = "Organisation modifiée avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
+
+
+    }
 
 }
 
