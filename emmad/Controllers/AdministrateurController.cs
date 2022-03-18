@@ -88,5 +88,27 @@ namespace emmad.Controllers
             }
         }
 
+        [HttpPut("{id:int}")]
+        [Authorize]
+        public IActionResult Update(int id, UpdateAdministrateurRequest model)
+        {
+            _logger.LogInformation("Log message in the Update method");
+            try
+            {
+                if (id != Administrateur.id)
+                {
+                    return Unauthorized(new { message = "Vous n'avez pas les droits nécessaires pour modifier cet administrateur." });
+                }
+
+                var admin = Service.Update(id, model);
+
+                return Ok(new { data = admin, message = "Administrateur modifié avec succès." });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }

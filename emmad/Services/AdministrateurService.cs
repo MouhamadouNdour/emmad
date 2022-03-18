@@ -6,6 +6,7 @@ using emmad.Models;
 using emmad.Settings;
 using Microsoft.Extensions.Options;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace emmad.Services
@@ -145,6 +146,26 @@ namespace emmad.Services
 
                 MasterContext.administrateur.Remove(administrateur);
                 MasterContext.SaveChanges();
+            }
+        }
+
+        public AdministrateurResponse Update(int id, UpdateAdministrateurRequest model)
+        {
+            var administrateur = MasterContext.administrateur.Find(id);
+
+            if (administrateur != null)
+            {
+                // Copie du model au l'entite administrateur
+                Mapper.Map(model, administrateur);
+                // administrateur.Updated = DateTime.UtcNow;
+                MasterContext.administrateur.Update(administrateur);
+                MasterContext.SaveChanges();
+
+                return Mapper.Map<AdministrateurResponse>(administrateur);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Compte administrateur introuvable.");
             }
         }
 
