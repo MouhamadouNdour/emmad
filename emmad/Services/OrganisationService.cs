@@ -156,7 +156,7 @@ namespace emmad.Services
 
             if (organisation.id_administrateur != connectedUser.id)
             {
-                throw new Exception("Vous n'avez pas les droits de supprimer ce rdv.");
+                throw new Exception("Vous n'avez pas les droits de supprimer cete organisation.");
             }
 
             var clients = MasterContext.client

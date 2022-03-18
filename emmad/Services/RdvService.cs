@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using AutoMapper;
@@ -6,6 +8,7 @@ using emmad.Context;
 using emmad.Entity;
 using emmad.Interface;
 using emmad.Models;
+using emmad.Parameter;
 using emmad.Settings;
 using Microsoft.Extensions.Options;
 
@@ -84,6 +87,33 @@ namespace emmad.Services
 
             MasterContext.rdv.Remove(rdv);
             MasterContext.SaveChanges();
+        }
+
+        public IEnumerable GetRdv(Administrateur administrateur, int idClient, PageParameters pageParameters)
+        {
+            var rdvs = MasterContext.rdv
+                         .Where(c => c.id_client == idClient)
+                         .Skip((pageParameters.page - 1) * pageParameters.size)
+                         .Take(pageParameters.size)
+                         .ToList();
+
+            List<Rdv> RdvsResponse = new List<Rdv>();
+
+            foreach (var rdv in rdvs)
+            {
+                var RdvResponse = new Rdv()
+                {
+                    id = rdv.id,
+                    resume = rdv.resume,
+                    date = rdv.date,
+                    id_client = rdv.id_client,
+                    lieu = rdv.lieu
+                };
+
+                RdvsResponse.Add(RdvResponse);
+            }
+
+            return RdvsResponse;
         }
 
     }
