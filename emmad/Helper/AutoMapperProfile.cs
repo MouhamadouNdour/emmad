@@ -42,6 +42,19 @@ namespace emmad.Helper
                         return true;
                     }
                 ));
+            CreateMap<Client, ClientResponse>();
+            CreateMap<UpdateClientRequest, Client>()
+                .ForAllMembers(x => x.Condition(
+                    (src, dest, prop) =>
+                    {
+                        // Ignore les valeurs null et les champs vides
+                        if (prop == null) return false;
+                        if (prop.GetType() == typeof(int) && int.Parse(prop.ToString()) == 0) return false;
+                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+
+                        return true;
+                    }
+                ));
         }
     }
 }

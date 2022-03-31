@@ -225,5 +225,35 @@ namespace emmad.Services
 
         }
 
+        public ClientResponse Update(Administrateur administrateur, int idClient, UpdateClientRequest model)
+        {
+
+            var client = MasterContext.client.Find(idClient);
+
+            if (client == null)
+            {
+                throw new Exception("Ce client n'existe pas.");
+            }
+
+            var organisation = MasterContext.organisation.Find(client.id_organisation);
+
+            if (organisation == null)
+            {
+                throw new Exception("Vous n'avez pas le droit de modifier ce client.");
+            }
+            if (organisation.id_administrateur == administrateur.id)
+            {
+                // Copie du model au l'entite organisation
+                Mapper.Map(model, client);
+                MasterContext.client.Update(client);
+                MasterContext.SaveChanges();
+
+                return Mapper.Map<ClientResponse>(client);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Vous n'avez pas les droits de modifier ce client.");
+            }
+        }
     }
 }

@@ -10,5 +10,6 @@ namespace emmad.Interface
         public CreateClientResponse CreateClient(Administrateur administrateur, CreateClientRequest model);
         public IEnumerable GetClient(Administrateur administrateur, int idOrganisation, PageParameters pageParameters);
         public void DeleteClient(Administrateur administrateur,int idOrganisation, int idClient);
+        public ClientResponse Update(Administrateur administrateur, int idClient, UpdateClientRequest model);
     }
 }

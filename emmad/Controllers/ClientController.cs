@@ -72,5 +72,24 @@ namespace emmad.Controllers
 
         }
 
+
+        [HttpPut("{idClient:int}")]
+        [Authorize]
+        public IActionResult Update(int idClient, UpdateClientRequest model)
+        {
+            try
+            {
+                return Ok(new
+                {
+                    data = Service.Update(Administrateur, idClient, model),
+                    message = "Client modifiée avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
+
     }
 }
