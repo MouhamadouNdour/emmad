@@ -18,7 +18,17 @@ namespace emmad.Helper
             CreateMap<CreateRdvRequest, Rdv>();
             CreateMap<Rdv, CreateRdvResponse>();
             CreateMap<Administrateur, AdministrateurResponse>();
-            CreateMap<UpdateAdministrateurRequest, Administrateur>();
+            CreateMap<UpdateAdministrateurRequest, Administrateur>()
+                .ForAllMembers(x => x.Condition(
+                    (src, dest, prop) =>
+                    {
+                        // Ignore les valeurs null et les champs vides
+                        if (prop == null) return false;
+                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+
+                        return true;
+                    }
+                ));
             CreateMap<Organisation, OrganisationResponse>();
             CreateMap<UpdateOrganisationRequest, Organisation>()
                 .ForAllMembers(x => x.Condition(
@@ -26,6 +36,7 @@ namespace emmad.Helper
                     {
                         // Ignore les valeurs null et les champs vides
                         if (prop == null) return false;
+                        if (prop.GetType() == typeof(int) && int.Parse(prop.ToString()) == 0) return false;
                         if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
 
                         return true;

@@ -34,7 +34,6 @@ namespace emmad.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         [HttpGet]
@@ -48,7 +47,6 @@ namespace emmad.Controllers
             {
                 return BadRequest(new { message = ex.Message });
             }
-
         }
 
         [HttpDelete("{idOrganisation:int}")]
