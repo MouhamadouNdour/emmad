@@ -4,12 +4,8 @@ using emmad.Helper;
 using emmad.Interface;
 using emmad.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace emmad.Controllers
 {
@@ -17,30 +13,29 @@ namespace emmad.Controllers
     [Route("[controller]")]
     public class AdministrateurController : BaseController
     {
-
         private IAdministrateur Service;
-        private readonly ILogger _logger;
+        private readonly ILoggerService _logger;
 
-        public AdministrateurController(IAdministrateur _service, ILoggerFactory logFactory)
+        public AdministrateurController(IAdministrateur _service, ILoggerService logger)
         {
             Service = _service;
-            _logger = logFactory.CreateLogger<AdministrateurController>();
+            _logger = logger;
         }
 
-        
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginRequest Model)
         {
-            _logger.LogInformation("Log message in the Login method");
-
+            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de connexion d'un administrateur.");
             try
             {
                 var response = Service.Login(Model);
+                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " +  HttpContext.Response.StatusCode.ToString());
                 return Ok(response);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                return BadRequest(new { message = e.Message });
+                _logger.LogError(ex.Message);
+                return BadRequest(new { message = ex.Message });
             }
 
         }
@@ -49,9 +44,10 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult CreateAdministrateur(CreateAdministrateurRequest model)
         {
-            _logger.LogInformation("Log message in the Create method");
+            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de création d'un administrateur.");
             try
             {
+                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(new {
                     data = Service.CreateAdministrateur(Administrateur, model),
                     message = "Administrateur créé avec succès."
@@ -59,6 +55,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -67,16 +64,19 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult DeleteAdministrateur(int id)
         {
-            _logger.LogInformation("Log message in the Delete method");
+            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de suppression d'un administrateur.");
             try
             {
                 if (id != Administrateur.id)
                 {
+                    _logger.LogWarn("Pas de droits nécessaires pour l'utilisateur [" + Administrateur.id+"]");
                     return Unauthorized(new { message = "Vous n'avez pas les droits nécessaires" });
                 }
 
                 Service.DeleteAdministrateur(id);
 
+                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogWarn("Suprression avec succès.");
                 return Ok(new
                 {
                     message = "Administrateur supprimé avec succès."
@@ -84,6 +84,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -92,20 +93,24 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult Update(int id, UpdateAdministrateurRequest model)
         {
-            _logger.LogInformation("Log message in the Update method");
+            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de mise à jour des informations d'un administrateur.");
             try
             {
                 if (id != Administrateur.id)
                 {
+                    _logger.LogWarn("Pas de droits nécessaires pour l'utilisateur [" + Administrateur.id + "]");
                     return Unauthorized(new { message = "Vous n'avez pas les droits nécessaires pour modifier cet administrateur." });
                 }
 
                 var admin = Service.Update(id, model);
 
+                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogWarn("Mise à jour des infos avec succès.");
                 return Ok(new { data = admin, message = "Administrateur modifié avec succès." });
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }

@@ -220,6 +220,16 @@ namespace emmad.Services
                 MasterContext.SaveChanges();
             }
 
+            var photos = MasterContext.photo
+                            .Where(p => p.id_client == client.id)
+                            .ToList();
+
+            foreach (var photo in photos)
+            {
+                MasterContext.photo.Remove(photo);
+                MasterContext.SaveChanges();
+            }
+
             MasterContext.client.Remove(client);
             MasterContext.SaveChanges();
 
@@ -227,7 +237,6 @@ namespace emmad.Services
 
         public ClientResponse Update(Administrateur administrateur, int idClient, UpdateClientRequest model)
         {
-
             var client = MasterContext.client.Find(idClient);
 
             if (client == null)
@@ -241,6 +250,7 @@ namespace emmad.Services
             {
                 throw new Exception("Vous n'avez pas le droit de modifier ce client.");
             }
+
             if (organisation.id_administrateur == administrateur.id)
             {
                 // Copie du model au l'entite organisation

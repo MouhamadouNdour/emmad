@@ -1,18 +1,12 @@
 using emmad.Context;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Newtonsoft.Json;
 using emmad.Interface;
 using emmad.Services;
 using emmad.Settings;
@@ -49,7 +43,6 @@ namespace emmad
             services.Configure<AppSettings>(Configuration.GetSection("AppSettings"));
             services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
             services.AddCors();
-            services.AddControllers();
             services.AddScoped<IEmail, EmailService>();
             services.AddScoped<IAdministrateur, AdministrateurService>();
             services.AddScoped<IOrganisation, OrganisationService>();
@@ -71,6 +64,10 @@ namespace emmad
                     }
                 });
             });
+
+            services.AddSingleton<ILoggerService, LoggerService>();
+
+            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
