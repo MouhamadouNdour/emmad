@@ -108,7 +108,6 @@ namespace emmad.Services
             MasterContext.SaveChanges();
 
             return Mapper.Map<CreateOrganisationResponse>(organisation);
-
         }
 
         public IEnumerable GetOrganisation(Administrateur administrateur, PageParameters pageParameters)
@@ -141,9 +140,7 @@ namespace emmad.Services
             }
 
             return organisationsResponse;
-
         }
-
 
         public void DeleteOrganisation(Administrateur connectedUser, int idOrganisation)
         {
@@ -181,14 +178,10 @@ namespace emmad.Services
 
             MasterContext.organisation.Remove(organisation);
             MasterContext.SaveChanges();
-
         }
-
-
 
         public OrganisationResponse Update(Administrateur administrateur, int idOrganisation, UpdateOrganisationRequest model)
         {
-
             var organisation = MasterContext.organisation.Find(idOrganisation);
 
             if (organisation == null)
