@@ -137,5 +137,46 @@ namespace emmad.Services
             return RdvsResponse;
         }
 
+        public RdvResponse Update(Administrateur administrateur, int idRdv, UpdateRdvRequest model)
+        {
+
+            var rdv = MasterContext.rdv.Find(idRdv);
+
+            if (rdv == null)
+            {
+                throw new Exception("Ce rdv n'existe pas.");
+            }
+
+            var client = MasterContext.client.Find(rdv.id_client);
+
+            if (client == null)
+            {
+                throw new Exception("Ce client n'existe pas.");
+            }
+
+            var organisation = MasterContext.organisation.Find(client.id_organisation);
+
+            if (organisation == null)
+            {
+                throw new Exception("Cette organisation n'existe pas.");
+            }
+            if (organisation.id_administrateur == administrateur.id)
+            {
+                // Copie du model au l'entite organisation
+                Mapper.Map(model, rdv);
+                if(!string.IsNullOrEmpty(model.dateRdv))
+                {
+                    rdv.date = DateTime.ParseExact(model.dateRdv, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                }
+                MasterContext.rdv.Update(rdv);
+                MasterContext.SaveChanges();
+
+                return Mapper.Map<RdvResponse>(rdv);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Vous n'avez pas les droits de modifier ce rdv.");
+            }
+        }
     }
 }

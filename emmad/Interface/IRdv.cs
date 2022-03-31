@@ -11,7 +11,7 @@ namespace emmad.Interface
         public CreateRdvResponse CreateRdv(Administrateur administrateur, CreateRdvRequest model);
         public IEnumerable GetRdv(Administrateur administrateur, int idOrganisation, PageParameters pageParameters);
         public void DeleteRdv(Administrateur administrateur, int idRdv);
+        public RdvResponse Update(Administrateur administrateur, int idRdv, UpdateRdvRequest model);
 
     }
 }
-

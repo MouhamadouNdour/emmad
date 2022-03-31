@@ -70,5 +70,24 @@ namespace emmad.Controllers
             }
 
         }
+
+
+        [HttpPut("{idRdv:int}")]
+        [Authorize]
+        public IActionResult Update(int idRdv, UpdateRdvRequest model)
+        {
+            try
+            {
+                return Ok(new
+                {
+                    data = Service.Update(Administrateur, idRdv, model),
+                    message = "Rdv modifié avec succès."
+                });
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { message = ex.Message });
+            }
+        }
     }
 }
