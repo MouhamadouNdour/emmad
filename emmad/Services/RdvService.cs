@@ -113,10 +113,21 @@ namespace emmad.Services
         public IEnumerable GetRdv(Administrateur administrateur, int idClient, PageParameters pageParameters)
         {
             var rdvs = MasterContext.rdv
-                         .Where(c => c.id_client == idClient)
+                         .Join(MasterContext.client,
+                         rdv => rdv.id_client,
+                         client => client.id,
+                         (rdv, client) => new { rdv, client })
+                         .Join(MasterContext.organisation,
+                         client2 => client2.client.id_organisation,
+                         organisation => organisation.id,
+                         (client, organisation) => new { client, organisation })
+                         .Where(c => c.client.rdv.id_client == idClient
+                                    && c.organisation.id_administrateur == administrateur.id)
                          .Skip((pageParameters.page - 1) * pageParameters.size)
                          .Take(pageParameters.size)
                          .ToList();
+
+
 
             List<Rdv> RdvsResponse = new List<Rdv>();
 
