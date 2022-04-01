@@ -136,21 +136,26 @@ namespace emmad.Services
         public IEnumerable GetClient(Administrateur administrateur, int idOrganisation, PageParameters pageParameters)
         {
             var clients  = MasterContext.client
-                         .Where(c => c.id_organisation == idOrganisation)
+                         .Join(MasterContext.organisation,
+                         client => client.id_organisation,
+                         organisation => organisation.id,
+                         (client, organisation) => new {client, organisation})
+                         .Where(c => c.client.id_organisation == idOrganisation
+                                    && c.organisation.id_administrateur == administrateur.id)
                          .Skip((pageParameters.page - 1) * pageParameters.size)
                          .Take(pageParameters.size)
                          .Select(c => new
                          {
-                             c.id,
-                             c.prenom,
-                             c.nom,
-                             c.email,
-                             c.telephone,
-                             c.age,
-                             c.id_organisation,
-                             c.Organisation,
-                             Photos = c.Photos
-                                        .Where(p => p.id_client == c.id)
+                             c.client.id,
+                             c.client.prenom,
+                             c.client.nom,
+                             c.client.email,
+                             c.client.telephone,
+                             c.client.age,
+                             c.client.id_organisation,
+                             c.client.Organisation,
+                             Photos = c.client.Photos
+                                        .Where(p => p.id_client == c.client.id)
                                         .Select(p => new
                                         {
                                             p.id,
