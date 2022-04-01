@@ -15,6 +15,7 @@ namespace emmad.Controllers
     {
         private IAdministrateur Service;
         private readonly ILoggerService _logger;
+        private string accessController = "Accès à AdministrateurController : ";
 
         public AdministrateurController(IAdministrateur _service, ILoggerService logger)
         {
@@ -25,7 +26,7 @@ namespace emmad.Controllers
         [HttpPost("login")]
         public ActionResult Login([FromBody] LoginRequest Model)
         {
-            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de connexion d'un administrateur.");
+            _logger.LogInfo(accessController + "Tentative de connexion d'un administrateur.");
             try
             {
                 var response = Service.Login(Model);
@@ -44,7 +45,7 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult CreateAdministrateur(CreateAdministrateurRequest model)
         {
-            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de création d'un administrateur.");
+            _logger.LogInfo(accessController + "Tentative de création d'un administrateur.");
             try
             {
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
@@ -64,7 +65,7 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult DeleteAdministrateur(int id)
         {
-            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de suppression d'un administrateur.");
+            _logger.LogInfo(accessController + "Tentative de suppression d'un administrateur.");
             try
             {
                 if (id != Administrateur.id)
@@ -93,7 +94,7 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult Update(int id, UpdateAdministrateurRequest model)
         {
-            _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de mise à jour des informations d'un administrateur.");
+            _logger.LogInfo(accessController + "Tentative de mise à jour des informations d'un administrateur.");
             try
             {
                 if (id != Administrateur.id)

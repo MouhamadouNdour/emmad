@@ -12,18 +12,23 @@ namespace emmad.Controllers
     public class OrganisationController : BaseController
     {
         private IOrganisation Service;
+        private readonly ILoggerService _logger;
+        private string accessController = "Accès à OrganisationController : ";
 
-        public OrganisationController(IOrganisation _service)
+        public OrganisationController(IOrganisation _service, ILoggerService logger)
         {
             Service = _service;
+            _logger = logger;
         }
 
         [HttpPost]
         [Authorize]
         public IActionResult CreateOrganisation(CreateOrganisationRequest model)
         {
+            _logger.LogInfo(accessController + "Tentative de création d'une organisation.");
             try
             {
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(new
                 {
                     data = Service.CreateOrganisation(Administrateur, model),
@@ -32,6 +37,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -39,12 +45,15 @@ namespace emmad.Controllers
         [HttpGet]
         public IActionResult GetOrganisation([FromQuery] PageParameters pageParameters)
         {
+            _logger.LogInfo(accessController + "Tentative de récupération des organisations.");
             try
             {
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(Service.GetOrganisation(Administrateur, pageParameters));
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -53,9 +62,12 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult DeleteOrganisation(int idOrganisation)
         {
+            _logger.LogInfo(accessController + "Tentative de suppression d'une organisation.");
             try
             {
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 Service.DeleteOrganisation(Administrateur, idOrganisation);
+                _logger.LogWarn("Suprression avec succès.");
 
                 return Ok(new
                 {
@@ -64,6 +76,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -72,8 +85,12 @@ namespace emmad.Controllers
         [Authorize]
         public IActionResult Update(int idOrganisation, UpdateOrganisationRequest model)
         {
+            _logger.LogInfo(accessController + "Tentative de mise à jour des données d'une organisation.");
             try
             {
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogWarn("Mise à jour des infos avec succès.");
+
                 return Ok(new
                 {
                     data = Service.Update(Administrateur, idOrganisation, model),
@@ -82,6 +99,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
