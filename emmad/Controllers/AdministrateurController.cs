@@ -30,6 +30,7 @@ namespace emmad.Controllers
             try
             {
                 var response = Service.Login(Model);
+
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " +  HttpContext.Response.StatusCode.ToString());
                 return Ok(response);
             }
@@ -48,9 +49,11 @@ namespace emmad.Controllers
             _logger.LogInfo(accessController + "Tentative de création d'un administrateur.");
             try
             {
+                var administrateur = Service.CreateAdministrateur(Administrateur, model);
+
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(new {
-                    data = Service.CreateAdministrateur(Administrateur, model),
+                    data = administrateur,
                     message = "Administrateur créé avec succès."
                 });
             }
@@ -75,9 +78,9 @@ namespace emmad.Controllers
                 }
 
                 Service.DeleteAdministrateur(id);
-
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 _logger.LogWarn("Suprression avec succès.");
+
                 return Ok(new
                 {
                     message = "Administrateur supprimé avec succès."

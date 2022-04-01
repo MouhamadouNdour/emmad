@@ -28,10 +28,12 @@ namespace emmad.Controllers
             _logger.LogInfo(accessController + "Tentative de création d'une organisation.");
             try
             {
+                var organisation = Service.CreateOrganisation(Administrateur, model);
+
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(new
                 {
-                    data = Service.CreateOrganisation(Administrateur, model),
+                    data = organisation,
                     message = "Organisation créée avec succès."
                 });
             }
@@ -48,8 +50,10 @@ namespace emmad.Controllers
             _logger.LogInfo(accessController + "Tentative de récupération des organisations.");
             try
             {
+                var organisation = Service.GetOrganisation(Administrateur, pageParameters);
+
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
-                return Ok(Service.GetOrganisation(Administrateur, pageParameters));
+                return Ok(organisation);
             }
             catch (Exception ex)
             {
@@ -65,8 +69,8 @@ namespace emmad.Controllers
             _logger.LogInfo(accessController + "Tentative de suppression d'une organisation.");
             try
             {
-                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 Service.DeleteOrganisation(Administrateur, idOrganisation);
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 _logger.LogWarn("Suprression avec succès.");
 
                 return Ok(new
@@ -88,12 +92,13 @@ namespace emmad.Controllers
             _logger.LogInfo(accessController + "Tentative de mise à jour des données d'une organisation.");
             try
             {
+                var organisation = Service.Update(Administrateur, idOrganisation, model);
                 _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 _logger.LogWarn("Mise à jour des infos avec succès.");
 
                 return Ok(new
                 {
-                    data = Service.Update(Administrateur, idOrganisation, model),
+                    data = organisation,
                     message = "Organisation modifiée avec succès."
                 });
             }
