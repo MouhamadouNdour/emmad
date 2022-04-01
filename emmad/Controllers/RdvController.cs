@@ -70,7 +70,7 @@ namespace emmad.Controllers
 
         [HttpGet("{idClient:int}")]
         [Authorize]
-        public IActionResult GetClient(int idClient, [FromQuery] PageParameters pageParameters)
+        public IActionResult GetRdv(int idClient, [FromQuery] PageParameters pageParameters)
         {
             _logger.LogInfo(accessController + "Tentative de récupération d'un rendez-vous.");
             try
