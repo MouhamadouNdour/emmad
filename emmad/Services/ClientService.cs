@@ -137,11 +137,11 @@ namespace emmad.Services
         public IEnumerable GetClient(Administrateur administrateur,int idOrganisation, PageParameters pageParameters)
         {
 
-            var clients  = MasterContext.client
+            var clients = MasterContext.client
                          .Join(MasterContext.organisation,
                          client => client.id_organisation,
                          organisation => organisation.id,
-                         (client, organisation) => new {client, organisation})
+                         (client, organisation) => new { client, organisation })
                          .Where(c => c.client.id_organisation == idOrganisation
                                     && c.organisation.id_administrateur == administrateur.id)
                          .Skip((pageParameters.page - 1) * pageParameters.size)
@@ -166,6 +166,11 @@ namespace emmad.Services
                                         })
                          })
                          .ToList();
+
+            if (!clients.Any())
+            { 
+                throw new Exception("Vous n'avez pas les droits de voir ce client ou vous n'avez pas créé de client");
+            };
 
             var photosResponse = new List<PhotoResponse>();
             var clientsResponse = new List<GetClientResponse>();
