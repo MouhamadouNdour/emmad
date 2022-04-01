@@ -22,6 +22,9 @@ mdp : Bonjourdu13
 Hébergeur Web : 
 https://member5-4.smarterasp.net/cp/filemanager.asp?d=h:\root\home\emmadapi-001\www\site1\#
 
+Nom d'utilisateur : emmadapi
+mdp : Bonjourdu13
+
 Lien pour tranformer img en base64 : https://elmah.io/tools/base64-image-encoder/
 
 
