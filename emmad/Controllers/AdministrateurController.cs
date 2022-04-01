@@ -29,7 +29,7 @@ namespace emmad.Controllers
             try
             {
                 var response = Service.Login(Model);
-                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " +  HttpContext.Response.StatusCode.ToString());
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " +  HttpContext.Response.StatusCode.ToString());
                 return Ok(response);
             }
             catch (Exception ex)
@@ -47,7 +47,7 @@ namespace emmad.Controllers
             _logger.LogInfo("Accès à AdministrateurController : " + "Tentative de création d'un administrateur.");
             try
             {
-                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 return Ok(new {
                     data = Service.CreateAdministrateur(Administrateur, model),
                     message = "Administrateur créé avec succès."
@@ -75,7 +75,7 @@ namespace emmad.Controllers
 
                 Service.DeleteAdministrateur(id);
 
-                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 _logger.LogWarn("Suprression avec succès.");
                 return Ok(new
                 {
@@ -104,7 +104,7 @@ namespace emmad.Controllers
 
                 var admin = Service.Update(id, model);
 
-                _logger.LogDebug(HttpContext.Request.Method + " Request " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
+                _logger.LogDebug(HttpContext.Request.Method + " Request - " + HttpContext.Request.Host + " => " + HttpContext.Response.StatusCode.ToString());
                 _logger.LogWarn("Mise à jour des infos avec succès.");
                 return Ok(new { data = admin, message = "Administrateur modifié avec succès." });
             }
