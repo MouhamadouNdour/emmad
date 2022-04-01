@@ -12,6 +12,8 @@ Compte admin afin d'avoir un token :
 
 Collection Postman : Lien d'invitation :  https://app.getpostman.com/join-team?invite_code=bb4e2054262d4017df29ad06ef1b9139&target_code=7ed325d8226787a776fecf1395033a33
 
+Lien collection : https://emmadapi.postman.co/workspace/3bd82e6b-ae24-4d55-832b-4df994dbf106/overview
+
 Hébergeur Bdd : 
 
 https://somee.com/doka/DOC/DOLoginOrRegister.aspx
