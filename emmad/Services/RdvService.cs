@@ -37,7 +37,7 @@ namespace emmad.Services
 
             if (organisation.id_administrateur != administrateur.id)
             {
-                throw new Exception("Vous n'avez pas les droits de supprimer ce rdv.");
+                throw new Exception("Vous n'avez pas les droits de créer ce rdv.");
             }
 
             if (string.IsNullOrWhiteSpace(model.resume))
