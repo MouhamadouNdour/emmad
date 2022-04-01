@@ -39,6 +39,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
 
@@ -62,6 +63,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
@@ -80,6 +82,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
 
@@ -104,6 +107,7 @@ namespace emmad.Controllers
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex.Message);
                 return BadRequest(new { message = ex.Message });
             }
         }
