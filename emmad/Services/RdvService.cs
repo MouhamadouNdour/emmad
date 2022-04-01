@@ -112,22 +112,22 @@ namespace emmad.Services
 
         public IEnumerable GetRdv(Administrateur administrateur, int idClient, PageParameters pageParameters)
         {
-            var rdvs = MasterContext.rdv
-                         .Join(MasterContext.client,
-                         rdv => rdv.id_client,
-                         client => client.id,
-                         (rdv, client) => new { rdv, client })
-                         .Join(MasterContext.organisation,
-                         client2 => client2.client.id_organisation,
-                         organisation => organisation.id,
-                         (client, organisation) => new { client, organisation })
-                         .Where(c => c.client.rdv.id_client == idClient
-                                    && c.organisation.id_administrateur == administrateur.id)
-                         .Skip((pageParameters.page - 1) * pageParameters.size)
-                         .Take(pageParameters.size)
-                         .ToList();
+            var rdvs = (from rdv in MasterContext.rdv
+                        join client in MasterContext.client
+                        on rdv.id_client equals client.id
+                        join organisation in MasterContext.organisation
+                        on client.id_organisation equals organisation.id
+                        where rdv.id_client == idClient
+                              && organisation.id_administrateur == administrateur.id
+                        select rdv)
+                        .Skip((pageParameters.page - 1) * pageParameters.size)
+                        .Take(pageParameters.size)
+                        .ToList();
 
-
+            if (!rdvs.Any())
+            {
+                throw new Exception("Vous n'avez pas les droits de voir ce rdv ou vous n'avez pas créé ce rdv");
+            };
 
             List<Rdv> RdvsResponse = new List<Rdv>();
 
