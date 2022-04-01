@@ -136,7 +136,7 @@ namespace emmad.Services
 
         public IEnumerable GetClient(Administrateur administrateur,int idOrganisation, PageParameters pageParameters)
         {
-<<<<<<< Updated upstream
+
             var clients  = MasterContext.client
                          .Join(MasterContext.organisation,
                          client => client.id_organisation,
@@ -144,11 +144,6 @@ namespace emmad.Services
                          (client, organisation) => new {client, organisation})
                          .Where(c => c.client.id_organisation == idOrganisation
                                     && c.organisation.id_administrateur == administrateur.id)
-=======
-
-            var clients = MasterContext.client
-                         .Where(c => c.id_organisation == idOrganisation)
->>>>>>> Stashed changes
                          .Skip((pageParameters.page - 1) * pageParameters.size)
                          .Take(pageParameters.size)
                          .Select(c => new
