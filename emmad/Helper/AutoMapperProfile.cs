@@ -24,7 +24,7 @@ namespace emmad.Helper
                     {
                         // Ignore les valeurs null et les champs vides
                         if (prop == null) return false;
-                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+                        if (prop.GetType() == typeof(string) && ((string)prop == null)) return false;
 
                         return true;
                     }
@@ -34,10 +34,11 @@ namespace emmad.Helper
                 .ForAllMembers(x => x.Condition(
                     (src, dest, prop) =>
                     {
-                        // Ignore les valeurs null et les champs vides
+                        // Ignore les valeurs null
                         if (prop == null) return false;
                         if (prop.GetType() == typeof(int) && int.Parse(prop.ToString()) == 0) return false;
-                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+                        if (prop.GetType() == typeof(string) && ((string)prop == null)) return false;
+                        //if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
 
                         return true;
                     }
@@ -50,7 +51,7 @@ namespace emmad.Helper
                         // Ignore les valeurs null et les champs vides
                         if (prop == null) return false;
                         if (prop.GetType() == typeof(int) && int.Parse(prop.ToString()) == 0) return false;
-                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+                        if (prop.GetType() == typeof(string) && ((string)prop == null)) return false;
 
                         return true;
                     }
@@ -63,7 +64,7 @@ namespace emmad.Helper
                         // Ignore les valeurs null et les champs vides
                         if (prop == null) return false;
                         if (prop.GetType() == typeof(int) && int.Parse(prop.ToString()) == 0) return false;
-                        if (prop.GetType() == typeof(string) && string.IsNullOrEmpty((string)prop)) return false;
+                        if (prop.GetType() == typeof(string) && ((string)prop == null)) return false;
 
                         return true;
                     }
