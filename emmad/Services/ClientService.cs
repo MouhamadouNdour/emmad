@@ -133,7 +133,8 @@ namespace emmad.Services
             return Mapper.Map<CreateClientResponse>(client);
         }
 
-        public IEnumerable GetClient(Administrateur administrateur, int idOrganisation, PageParameters pageParameters)
+
+        public IEnumerable GetClient(Administrateur administrateur,int idOrganisation, PageParameters pageParameters)
         {
             var clients  = MasterContext.client
                          .Join(MasterContext.organisation,
@@ -193,7 +194,7 @@ namespace emmad.Services
             return clientsResponse;
         }
 
-        public void DeleteClient(Administrateur connectedUser,int idOrganisation, int idClient)
+        public void DeleteClient(Administrateur connectedUser, int idOrganisation, int idClient)
         {
 
             var client = MasterContext.client.Find(idClient);
