@@ -11,6 +11,7 @@ using emmad.Interface;
 using emmad.Services;
 using emmad.Settings;
 using emmad.Helper;
+using System.Reflection;
 
 namespace emmad
 {
@@ -49,6 +50,9 @@ namespace emmad
             services.AddScoped<IClient, ClientService>();
             services.AddScoped<IRdv, RdvService>();
 
+            services.AddSingleton<ILoggerService, LoggerService>();
+
+            services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
@@ -64,10 +68,6 @@ namespace emmad
                     }
                 });
             });
-
-            services.AddSingleton<ILoggerService, LoggerService>();
-
-            services.AddControllers();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
