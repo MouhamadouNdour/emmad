@@ -68,7 +68,7 @@ namespace emmad.Services
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(settings.JWTSecretCode);
-            tokenExpiration = DateTime.UtcNow.AddDays(1);
+            tokenExpiration = DateTime.UtcNow.AddMinutes(10);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new[] { new Claim("id", administrateur.id.ToString()) }),
